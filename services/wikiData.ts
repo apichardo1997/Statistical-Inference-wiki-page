@@ -61,7 +61,7 @@ export const wikiContent: Chapter[] = [
           **Key Insight:** In-sample error (training error) can severely overestimate prediction accuracy. A complex model (high d) may have 0 residual standard deviation but high Mean Squared Prediction Error (MSPE) on test data.
         `,
         equations: [
-            { label: 'True Model', formula: 'y_i = \\sin(2\\pi x_i) + \\epsilon_i' }
+            { label: 'True Model', formula: String.raw`y_i = \sin(2\pi x_i) + \epsilon_i` }
         ]
       },
       {
@@ -82,8 +82,8 @@ export const wikiContent: Chapter[] = [
           An important property of GLMs is that the log-likelihood function is concave (provided the canonical link function is used), facilitating optimization.
         `,
          equations: [
-            { label: 'GLM Structure', formula: 'g(E(y_i|x_i)) = x_i^T\\beta' },
-            { label: 'Logistic Link', formula: '\\log(\\frac{\\pi_i}{1-\\pi_i}) = x_i^T\\beta' }
+            { label: 'GLM Structure', formula: String.raw`g(E(y_i|x_i)) = x_i^T\beta` },
+            { label: 'Logistic Link', formula: String.raw`\log\!\left(\frac{\pi_i}{1-\pi_i}\right) = x_i^T\beta` }
         ]
       },
       {
@@ -99,7 +99,7 @@ export const wikiContent: Chapter[] = [
           **The Trade-off:** Simple models have high bias but low variance. Complex models have low bias but high variance. High-dimensional statistics aims to optimize this trade-off.
         `,
         equations: [
-            { label: 'MSPE Decomposition', formula: 'E[(Y - \\hat{m})^2] = V(Y) + V(\\hat{m}) + Bias^2(\\hat{m})' }
+            { label: 'MSPE Decomposition', formula: String.raw`E[(Y - \hat{m})^2] = V(Y) + V(\hat{m}) + \text{Bias}^2(\hat{m})` }
         ]
       },
       {
@@ -137,8 +137,8 @@ export const wikiContent: Chapter[] = [
           - **EBIC:** Extended BIC for high-dimensional settings (large d).
         `,
         equations: [
-             { label: 'Optimization', formula: '\\hat{\\theta} = \\arg\\max [ \\log p(y|\\theta) - r(\\theta) ]' },
-             { label: 'BIC', formula: '-2 \\log p(y|\\theta) + \\log(n)|\\beta|_0' }
+             { label: 'Optimization', formula: String.raw`\hat{\theta} = \arg\max \big[ \log p(y|\theta) - r(\theta) \big]` },
+             { label: 'BIC', formula: String.raw`-2 \log p(y|\theta) + \log(n)\,|\beta|_0` }
         ]
       },
       {
@@ -157,8 +157,8 @@ export const wikiContent: Chapter[] = [
           - Corresponds to a double-exponential (Laplace) prior in Bayesian terms.
         `,
         equations: [
-            { label: 'LASSO', formula: '- \\log p(y|\\theta) + \\lambda |\\beta|_1' },
-            { label: 'Ridge', formula: '- \\log p(y|\\theta) + \\lambda |\\beta|_2^2' }
+            { label: 'LASSO', formula: String.raw`- \log p(y|\theta) + \lambda |\beta|_1` },
+            { label: 'Ridge', formula: String.raw`- \log p(y|\theta) + \lambda |\beta|_2^2` }
         ]
       },
       {
@@ -193,7 +193,7 @@ export const wikiContent: Chapter[] = [
           The posterior mode is analogous to penalized likelihood estimates.
         `,
         equations: [
-            { label: 'Bayes Theorem', formula: 'p(\\theta|y) \\propto p(y|\\theta)p(\\theta)' }
+            { label: 'Bayes Theorem', formula: String.raw`p(\theta|y) \propto p(y|\theta)p(\theta)` }
         ]
       },
       {
@@ -239,8 +239,8 @@ export const wikiContent: Chapter[] = [
           **Regularity:** smooth log-likelihood, identifiable parameters, information matrix finite.
         `,
         equations: [
-          { label: 'Score Equation', formula: '\\nabla_\\theta \\ell(\\theta) = 0' },
-          { label: 'Fisher Information', formula: 'I(\\theta) = -E\\left[ \\nabla_\\theta^2 \\ell(\\theta) \\right]' }
+          { label: 'Score Equation', formula: String.raw`\nabla_\theta \ell(\theta) = 0` },
+          { label: 'Fisher Information', formula: String.raw`I(\theta) = -E\!\left[ \nabla_\theta^2 \ell(\theta) \right]` }
         ]
       },
       {
@@ -256,8 +256,8 @@ export const wikiContent: Chapter[] = [
           **Bootstrap:** resample data, recompute estimator, take percentiles or basic/BCa corrections. Good when analytic SE is messy.
         `,
         equations: [
-          { label: 'Asymptotic CI', formula: '\\hat{\\theta} \\pm z_{1-\\alpha/2} \\cdot \\widehat{\\text{se}}(\\hat{\\theta})' },
-          { label: 'LR Interval', formula: '2\\big[\\ell(\\hat{\\theta}) - \\ell(\\theta)\\big] \\leq \\chi^2_{1-\\alpha, df}' }
+          { label: 'Asymptotic CI', formula: String.raw`\hat{\theta} \pm z_{1-\alpha/2} \cdot \widehat{\text{se}}(\hat{\theta})` },
+          { label: 'LR Interval', formula: String.raw`2\big[\ell(\hat{\theta}) - \ell(\theta)\big] \leq \chi^2_{1-\alpha, df}` }
         ]
       },
       {
@@ -273,7 +273,7 @@ export const wikiContent: Chapter[] = [
           **Practice:** sketch rejection regions, compute power for a range of effect sizes, and state assumptions.
         `,
         equations: [
-          { label: 'Likelihood Ratio', formula: '\\Lambda(y) = \\frac{\\sup_{\\theta \\in \\Theta_0} p(y|\\theta)}{\\sup_{\\theta \\in \\Theta} p(y|\\theta)}' }
+          { label: 'Likelihood Ratio', formula: String.raw`\Lambda(y) = \frac{\sup_{\theta \in \Theta_0} p(y|\theta)}{\sup_{\theta \in \Theta} p(y|\theta)}` }
         ]
       },
       {
@@ -308,7 +308,7 @@ export const wikiContent: Chapter[] = [
           To prevent overfitting (wiggliness), a roughness penalty is added, often controlled by Generalized Cross-Validation (GCV).
         `,
         equations: [
-            { label: 'GAM Structure', formula: 'y_i = \\sum f_j(x_{ij}) + \\epsilon_i' }
+            { label: 'GAM Structure', formula: String.raw`y_i = \sum f_j(x_{ij}) + \epsilon_i` }
         ]
       }
     ]

@@ -1,12 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-
-declare global {
-  interface Window {
-    katex?: {
-      render: (tex: string, el: HTMLElement, opts?: Record<string, unknown>) => void;
-    };
-  }
-}
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 interface MathDisplayProps {
   label?: string;
@@ -18,44 +12,16 @@ const MathDisplay: React.FC<MathDisplayProps> = ({ label, formula }) => {
   const [rendered, setRendered] = useState(false);
 
   useEffect(() => {
-    let cancelled = false;
-
-    const renderMath = async (attempt = 0) => {
-      if (!containerRef.current || cancelled) return;
-
-      let katexLib = window.katex;
-      // If the global is not ready, try a dynamic import (falls back to CDN).
-      if (!katexLib) {
-        try {
-          const mod = await import('https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.mjs');
-          katexLib = mod.default || (mod as any).katex;
-        } catch (err) {
-          // Retry shortly if katex still not available.
-        }
-      }
-
-      if (!katexLib) {
-        if (attempt < 5) {
-          setTimeout(() => renderMath(attempt + 1), 120);
-        }
-        return;
-      }
-
-      try {
-        katexLib.render(formula, containerRef.current, {
-          throwOnError: false,
-          displayMode: true
-        });
-        if (!cancelled) setRendered(true);
-      } catch {
-        if (!cancelled) setRendered(false);
-      }
-    };
-
-    renderMath();
-    return () => {
-      cancelled = true;
-    };
+    if (!containerRef.current) return;
+    try {
+      katex.render(formula, containerRef.current, {
+        throwOnError: false,
+        displayMode: true
+      });
+      setRendered(true);
+    } catch {
+      setRendered(false);
+    }
   }, [formula]);
 
   return (

@@ -12,14 +12,22 @@ const MathDisplay: React.FC<MathDisplayProps> = ({ label, formula }) => {
   const [rendered, setRendered] = useState(false);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const el = containerRef.current;
+    if (!el) return;
     try {
-      katex.render(formula, containerRef.current, {
+      katex.render(formula, el, {
         throwOnError: false,
         displayMode: true
       });
-      setRendered(true);
+      const hasContent = el.innerHTML.trim().length > 0;
+      setRendered(hasContent);
+      if (!hasContent) {
+        el.textContent = formula;
+      }
     } catch {
+      if (el) {
+        el.textContent = formula;
+      }
       setRendered(false);
     }
   }, [formula]);

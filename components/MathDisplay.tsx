@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useMemo } from 'react';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 
@@ -8,27 +8,14 @@ interface MathDisplayProps {
 }
 
 const MathDisplay: React.FC<MathDisplayProps> = ({ label, formula }) => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const [rendered, setRendered] = useState(false);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
+  const renderedHtml = useMemo(() => {
     try {
-      katex.render(formula, el, {
+      return katex.renderToString(formula, {
         throwOnError: false,
         displayMode: true
       });
-      const hasContent = el.innerHTML.trim().length > 0;
-      setRendered(hasContent);
-      if (!hasContent) {
-        el.textContent = formula;
-      }
     } catch {
-      if (el) {
-        el.textContent = formula;
-      }
-      setRendered(false);
+      return null;
     }
   }, [formula]);
 
@@ -40,9 +27,14 @@ const MathDisplay: React.FC<MathDisplayProps> = ({ label, formula }) => {
         </div>
       )}
       <div className="text-gray-800 overflow-x-auto">
-        <div ref={containerRef} className={`${rendered ? 'text-base leading-7' : 'font-mono text-lg'}`}>
-          {!rendered && formula}
-        </div>
+        {renderedHtml ? (
+          <div
+            className="text-base leading-7"
+            dangerouslySetInnerHTML={{ __html: renderedHtml }}
+          />
+        ) : (
+          <div className="font-mono text-lg">{formula}</div>
+        )}
       </div>
     </div>
   );

@@ -18,17 +18,44 @@ const MathDisplay: React.FC<MathDisplayProps> = ({ label, formula }) => {
   const [rendered, setRendered] = useState(false);
 
   useEffect(() => {
-    if (containerRef.current && window.katex) {
+    let cancelled = false;
+
+    const renderMath = async (attempt = 0) => {
+      if (!containerRef.current || cancelled) return;
+
+      let katexLib = window.katex;
+      // If the global is not ready, try a dynamic import (falls back to CDN).
+      if (!katexLib) {
+        try {
+          const mod = await import('https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.mjs');
+          katexLib = mod.default || (mod as any).katex;
+        } catch (err) {
+          // Retry shortly if katex still not available.
+        }
+      }
+
+      if (!katexLib) {
+        if (attempt < 5) {
+          setTimeout(() => renderMath(attempt + 1), 120);
+        }
+        return;
+      }
+
       try {
-        window.katex.render(formula, containerRef.current, {
+        katexLib.render(formula, containerRef.current, {
           throwOnError: false,
           displayMode: true
         });
-        setRendered(true);
+        if (!cancelled) setRendered(true);
       } catch {
-        setRendered(false);
+        if (!cancelled) setRendered(false);
       }
-    }
+    };
+
+    renderMath();
+    return () => {
+      cancelled = true;
+    };
   }, [formula]);
 
   return (

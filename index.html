@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Statistical Modeling Wiki</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              mono: ['JetBrains Mono', 'monospace'],
+              sans: ['"Space Grotesk"', 'sans-serif'],
+              mono: ['"IBM Plex Mono"', 'monospace'],
             },
             colors: {
               brand: {
@@ -30,7 +30,7 @@
     </script>
     <style>
       body {
-        background-color: #f8fafc;
+        background: radial-gradient(circle at 12% 20%, #e0f2fe 0, rgba(224, 242, 254, 0) 22%), radial-gradient(circle at 85% 10%, #fef9c3 0, rgba(254, 249, 195, 0) 18%), #f8fafc;
       }
       /* Custom scrollbar for sidebar */
       .custom-scroll::-webkit-scrollbar {
@@ -58,5 +58,6 @@
 </head>
   <body>
     <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>

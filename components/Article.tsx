@@ -2,6 +2,7 @@ import React from 'react';
 import { SubSection } from '../types';
 import MathDisplay from './MathDisplay';
 import OverfittingDemo from './OverfittingDemo';
+import StudyDashboard from './StudyDashboard';
 
 interface ArticleProps {
   data: SubSection;
@@ -10,6 +11,17 @@ interface ArticleProps {
 const Article: React.FC<ArticleProps> = ({ data }) => {
   // Simple paragraph splitter
   const paragraphs = data.content.trim().split('\n').filter(p => p.trim() !== '');
+  const isDashboard = data.id === '0.1';
+  const trackLabel = (() => {
+    if (data.id.startsWith('0')) return 'Start Here';
+    if (data.id.startsWith('1')) return 'Regression & Fit';
+    if (data.id.startsWith('2')) return 'Penalized Likelihood';
+    if (data.id.startsWith('3')) return 'Bayesian';
+    if (data.id.startsWith('4')) return 'Inference Toolkit';
+    if (data.id.startsWith('5')) return 'Additive Models';
+    if (data.id.startsWith('6')) return 'Exam Prep';
+    return 'Notes';
+  })();
 
   return (
     <article className="max-w-3xl mx-auto px-6 py-12 lg:py-16 animation-fade-in">
@@ -19,35 +31,39 @@ const Article: React.FC<ArticleProps> = ({ data }) => {
         </h1>
         <div className="flex gap-2">
            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-             Lecture Notes Part 1
+             Statistical Inference Sprint
            </span>
            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-50 text-brand-700">
-             {data.id.startsWith('1') ? 'Regression' : data.id.startsWith('2') ? 'Penalized Likelihood' : 'Bayesian'}
+             {trackLabel}
            </span>
         </div>
       </header>
 
-      <div className="prose prose-slate prose-lg max-w-none text-gray-600 leading-relaxed">
-        {paragraphs.map((para, idx) => {
-          // Check if paragraph is a bullet point
-          if (para.trim().startsWith('-')) {
-            return (
-              <li key={idx} className="ml-4 list-disc pl-2 mb-2">
-                {para.replace('-', '').trim()}
-              </li>
-            );
-          }
-           // Check for bold headers inside text
-          if (para.trim().startsWith('**')) {
-             return (
-               <p key={idx} className="font-semibold text-gray-800 mt-6 mb-2">
-                 {para.replaceAll('**', '').trim()}
-               </p>
-             );
-          }
-          return <p key={idx} className="mb-4">{para}</p>;
-        })}
-      </div>
+      {isDashboard ? (
+        <StudyDashboard />
+      ) : (
+        <div className="prose prose-slate prose-lg max-w-none text-gray-600 leading-relaxed">
+          {paragraphs.map((para, idx) => {
+            // Check if paragraph is a bullet point
+            if (para.trim().startsWith('-')) {
+              return (
+                <li key={idx} className="ml-4 list-disc pl-2 mb-2">
+                  {para.replace('-', '').trim()}
+                </li>
+              );
+            }
+            // Check for bold headers inside text
+            if (para.trim().startsWith('**')) {
+              return (
+                <p key={idx} className="font-semibold text-gray-800 mt-6 mb-2">
+                  {para.replaceAll('**', '').trim()}
+                </p>
+              );
+            }
+            return <p key={idx} className="mb-4">{para}</p>;
+          })}
+        </div>
+      )}
 
       {/* Inject Interactive Components based on section ID */}
       {data.id === '1.1' && (

@@ -6,7 +6,7 @@ import { Search, Menu, X } from 'lucide-react';
 import { SubSection } from './types';
 
 function App() {
-  const [activeSectionId, setActiveSectionId] = useState<string>('1.1');
+  const [activeSectionId, setActiveSectionId] = useState<string>('0.1');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<{id: string, title: string}[]>([]);
@@ -15,6 +15,9 @@ function App() {
   const activeContent: SubSection | undefined = wikiContent
     .flatMap(c => c.subSections)
     .find(s => s.id === activeSectionId);
+  const activeChapter = wikiContent.find(chapter => 
+    chapter.subSections.some(sub => sub.id === activeSectionId)
+  );
 
   // Search Logic
   useEffect(() => {
@@ -60,11 +63,36 @@ function App() {
               <Menu className="w-6 h-6" />
             </button>
             <div className="hidden md:flex text-sm text-gray-400 breadcrumbs">
-              <span>StatMod</span>
+              <button
+                onClick={() => {
+                  setActiveSectionId('0.1');
+                  setSearchQuery('');
+                }}
+                className="text-gray-500 hover:text-brand-700 font-medium transition-colors"
+                aria-label="Go to Start Here"
+              >
+                Stat Inference
+              </button>
               <span className="mx-2">/</span>
-              <span>Notes Part 1</span>
-              <span className="mx-2">/</span>
-              <span className="text-gray-800 font-medium">{activeContent?.title}</span>
+              <button
+                onClick={() => {
+                  const target = activeChapter?.subSections[0]?.id;
+                  if (target) {
+                    setActiveSectionId(target);
+                    setSearchQuery('');
+                  }
+                }}
+                className="text-gray-800 font-semibold hover:text-brand-700 transition-colors"
+                aria-label="Go to chapter start"
+              >
+                {activeChapter?.title ?? 'Pick a track'}
+              </button>
+              {activeContent && (
+                <>
+                  <span className="mx-2">/</span>
+                  <span className="text-gray-800 font-medium">{activeContent.title}</span>
+                </>
+              )}
             </div>
           </div>
 
@@ -74,7 +102,7 @@ function App() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input 
                 type="text"
-                placeholder="Search concepts (e.g., 'LASSO', 'Bayesian')"
+                placeholder="Search concepts (e.g., 'MLE', 'CI', 'power')"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all"
@@ -128,7 +156,7 @@ function App() {
           )}
           
           <footer className="py-8 text-center text-xs text-gray-400 border-t border-gray-100 mt-auto">
-            <p>&copy; {new Date().getFullYear()} StatMod Wiki. Based on academic notes.</p>
+            <p>&copy; {new Date().getFullYear()} Statistical Inference Sprint Wiki.</p>
           </footer>
         </div>
 

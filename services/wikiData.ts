@@ -2,6 +2,45 @@ import { Chapter } from '../types';
 
 export const wikiContent: Chapter[] = [
   {
+    id: '0',
+    title: '0. Start Here',
+    subSections: [
+      {
+        id: '0.1',
+        title: '0.1 Study Dashboard',
+        content: `
+          Your hub for the 15-day sprint. Use the plan to pick today's focus, keep a simple mistakes log, and skim prereqs before diving into problems.
+        `
+      },
+      {
+        id: '0.2',
+        title: '0.2 How to Use This Wiki',
+        content: `
+          - Start every session on the dashboard: pick today's focus and one practice set.
+          - Skim the related concept page first; write a 3-sentence summary in your own words.
+          - Do 1-2 worked examples before attempting a past-final problem.
+          - Log every mistake (what you assumed, what was wrong, the fix); revisit the log on Days 7, 11, 15.
+          - End with a 3-bullet recap (facts, pitfalls, one open question).
+          
+          **Daily minimum:** 1 concept, 1 worked example, 2 problems, 1 mistake logged.
+        `
+      },
+      {
+        id: '0.3',
+        title: '0.3 Prereq Crash Course',
+        content: `
+          - Probability refresh: expectation/variance rules, covariance, CLT/LLN intuition, Slutsky, Delta method basics.
+          - Distribution kit: Normal/t, chi-square/F, Bernoulli/Binomial, Poisson; how to get means/variances/quantiles.
+          - Calculus/algebra: Taylor expansions around the MLE, gradients/Hessians, matrix identities (Woodbury, Schur complement).
+          - Asymptotics vocabulary: convergence in probability vs distribution, consistency, rate n^{-1/2}.
+          - R/Python comfort: simulate from distributions, estimate via maximum likelihood, bootstrap with resampling.
+          
+          Build a 1-page cheat sheet for these before Day 3; link it from the dashboard.
+        `
+      }
+    ]
+  },
+  {
     id: '1',
     title: '1. Fundamentals of Regression',
     subSections: [
@@ -183,6 +222,76 @@ export const wikiContent: Chapter[] = [
     ]
   },
   {
+    id: '4',
+    title: '4. Core Inference Toolkit',
+    subSections: [
+      {
+        id: '4.1',
+        title: '4.1 Estimators & Likelihoods',
+        content: `
+          **Estimator qualities:** unbiasedness, variance/MSE, consistency, asymptotic normality. MLEs are consistent (under regularity) and asymptotically efficient.
+          
+          **Likelihood playbook:**
+          - Write the log-likelihood; drop constants not depending on parameters.
+          - Take the score (first derivative) and set to zero for candidates.
+          - Use the Hessian (second derivative) to check curvature.
+          
+          **Regularity:** smooth log-likelihood, identifiable parameters, information matrix finite.
+        `,
+        equations: [
+          { label: 'Score Equation', formula: '\\nabla_\\theta \\ell(\\theta) = 0' },
+          { label: 'Fisher Information', formula: 'I(\\theta) = -E\\left[ \\nabla_\\theta^2 \\ell(\\theta) \\right]' }
+        ]
+      },
+      {
+        id: '4.2',
+        title: '4.2 Confidence Intervals',
+        content: `
+          **Exact intervals:** use a pivot (e.g., z/t/F/chi-square) with known sampling distribution.
+          
+          **Asymptotic intervals:** use asymptotic normality of an estimator; width depends on standard error and quantiles.
+          
+          **Likelihood-based:** likelihood-ratio, score, and Wald intervals are asymptotically equivalent; Wald can be poor at boundaries.
+          
+          **Bootstrap:** resample data, recompute estimator, take percentiles or basic/BCa corrections. Good when analytic SE is messy.
+        `,
+        equations: [
+          { label: 'Asymptotic CI', formula: '\\hat{\\theta} \\pm z_{1-\\alpha/2} \\cdot \\widehat{\\text{se}}(\\hat{\\theta})' },
+          { label: 'LR Interval', formula: '2\\big[\\ell(\\hat{\\theta}) - \\ell(\\theta)\\big] \\leq \\chi^2_{1-\\alpha, df}' }
+        ]
+      },
+      {
+        id: '4.3',
+        title: '4.3 Hypothesis Testing & Power',
+        content: `
+          **Neyman–Pearson:** most powerful test for simple H0 vs simple H1 uses the likelihood ratio. For composite hypotheses, we rely on LR/Wald/score tests.
+          
+          **Errors:** Type I (false positive) controlled by α; Type II controlled via power (1 - β). Higher power needs larger effect size, sample size, or variance reduction.
+          
+          **Multiple testing:** Bonferroni controls family-wise error; FDR approaches (Benjamini–Hochberg) control expected false discovery proportion.
+          
+          **Practice:** sketch rejection regions, compute power for a range of effect sizes, and state assumptions.
+        `,
+        equations: [
+          { label: 'Likelihood Ratio', formula: '\\Lambda(y) = \\frac{\\sup_{\\theta \\in \\Theta_0} p(y|\\theta)}{\\sup_{\\theta \\in \\Theta} p(y|\\theta)}' }
+        ]
+      },
+      {
+        id: '4.4',
+        title: '4.4 Asymptotics: Slutsky & Delta',
+        content: `
+          **Convergence flavors:** in probability (P), in distribution (D). Consistency is convergence in probability to the truth.
+          
+          **Slutsky:** if A_n ->p a and B_n ->d B, then A_n + B_n ->d a + B, A_n B_n ->d aB, and A_n^{-1} ->p a^{-1} if a ≠ 0.
+          
+          **Delta Method:** if sqrt(n)(T_n - θ) ->d Normal(0, σ²), then for smooth g, sqrt(n)(g(T_n) - g(θ)) ->d Normal(0, (g'(θ))² σ²).
+          
+          Use these to justify Wald intervals/tests and variance-stabilizing transforms.
+        `
+      }
+    ]
+  },
+  {
     id: '5',
     title: '5. Generalized Additive Models',
     subSections: [
@@ -201,6 +310,48 @@ export const wikiContent: Chapter[] = [
         equations: [
             { label: 'GAM Structure', formula: 'y_i = \\sum f_j(x_{ij}) + \\epsilon_i' }
         ]
+      }
+    ]
+  },
+  {
+    id: '6',
+    title: '6. Exam Playbook',
+    subSections: [
+      {
+        id: '6.1',
+        title: '6.1 Strategy & Timing',
+        content: `
+          - First 5 minutes: scan the exam, tag problems by topic/difficulty, and set a time budget per question.
+          - Start with a "banker" problem you can finish to secure points and confidence.
+          - Leave algebra-heavy steps for last; outline the logic first so you can earn method points.
+          - Keep a running checklist of assumptions for each model (iid, normality, independence, large-sample, etc.).
+          - If stuck: write down the likelihood, the statistic you would use, and the decision rule; partial credit beats blank space.
+        `
+      },
+      {
+        id: '6.2',
+        title: '6.2 Formula & Pitfall Sheet',
+        content: `
+          - Estimation: score, Hessian, Fisher information, asymptotic variance of MLE.
+          - Intervals: Wald vs score vs LR; when Wald fails (boundaries, skewed estimators).
+          - Tests: rejection regions for z/t/chi-square/F; link each to assumptions.
+          - Asymptotics: CLT, Slutsky, Delta method templates.
+          - Pitfalls: forgetting Jacobians in transformations, misreading one-sided vs two-sided tests, mixing up parameter vs estimate symbols.
+          
+          Keep this to one page; rehearse rebuilding it from memory on Day 15.
+        `
+      },
+      {
+        id: '6.3',
+        title: '6.3 Mistakes Log Template',
+        content: `
+          For each mistake, record:
+          - **Assumption/Guess:** what you assumed.
+          - **Error:** what was wrong or missing.
+          - **Fix/Trigger:** what to check next time (unit/shape/limit sanity checks, draw the sampling distribution, verify conditions).
+          
+          Revisit the log on Days 7, 11, and 15; add the triggers to your playbook.
+        `
       }
     ]
   }

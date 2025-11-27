@@ -27,7 +27,7 @@ const Navigation: React.FC<NavigationProps> = ({ content, activeSection, onSelec
         <div className="p-6">
           <div className="flex items-center gap-2 mb-8 text-brand-700 font-bold text-xl">
             <BookOpen className="w-6 h-6" />
-            <span>StatMod Wiki</span>
+            <span>Stat Inference Sprint</span>
           </div>
 
           <nav className="space-y-6">
@@ -68,7 +68,7 @@ const Navigation: React.FC<NavigationProps> = ({ content, activeSection, onSelec
         
         <div className="p-6 mt-auto border-t border-gray-200">
            <p className="text-xs text-gray-400">
-             Based on lecture notes by <br/>David Rossell.
+             Built for a 15-day self-study sprint.
            </p>
         </div>
       </aside>

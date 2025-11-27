@@ -352,6 +352,17 @@ export const wikiContent: Chapter[] = [
           
           Revisit the log on Days 7, 11, and 15; add the triggers to your playbook.
         `
+      },
+      {
+        id: '6.4',
+        title: '6.4 Problem Bank',
+        content: `
+          Collect practice items from lectures, finals, and textbook exercises.
+          
+          - Tag each problem by topic (e.g., MLE, CI, test, asymptotics), skill (derivation/computation/proof), and status (unseen/in-progress/solved).
+          - Write a "start hint" before checking any solution; after solving, add a post-mortem with pitfalls and time taken.
+          - Promote weak spots into the next day's focus and into the formula/pitfall sheet.
+        `
       }
     ]
   }

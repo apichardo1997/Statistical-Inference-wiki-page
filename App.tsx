@@ -148,7 +148,13 @@ function App() {
         {/* Scrollable Article Area */}
         <div className="flex-1 overflow-y-auto custom-scroll scroll-smooth">
           {activeContent ? (
-            <Article data={activeContent} />
+            <Article 
+              data={activeContent} 
+              onNavigate={(id) => {
+                setActiveSectionId(id);
+                setSearchQuery('');
+              }}
+            />
           ) : (
             <div className="flex items-center justify-center h-full text-gray-400">
               Select a section to begin reading.

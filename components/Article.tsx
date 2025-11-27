@@ -6,9 +6,10 @@ import StudyDashboard from './StudyDashboard';
 
 interface ArticleProps {
   data: SubSection;
+  onNavigate?: (id: string) => void;
 }
 
-const Article: React.FC<ArticleProps> = ({ data }) => {
+const Article: React.FC<ArticleProps> = ({ data, onNavigate }) => {
   // Simple paragraph splitter
   const paragraphs = data.content.trim().split('\n').filter(p => p.trim() !== '');
   const isDashboard = data.id === '0.1';
@@ -40,7 +41,7 @@ const Article: React.FC<ArticleProps> = ({ data }) => {
       </header>
 
       {isDashboard ? (
-        <StudyDashboard />
+        <StudyDashboard onNavigate={onNavigate} />
       ) : (
         <div className="prose prose-slate prose-lg max-w-none text-gray-600 leading-relaxed">
           {paragraphs.map((para, idx) => {
